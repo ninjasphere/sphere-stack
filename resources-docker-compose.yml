@@ -33,6 +33,8 @@ spherecouch:
 sphererabbit:
   hostname: sphererabbit
   image: ninjablocks/rabbitmq
+  environment:
+    - RABBITMQ_PASS="ofjoHyibkaibHiammagsenun"
   volumes:
     - /data/rabbitmq:/var/lib/rabbitmq
   ports:

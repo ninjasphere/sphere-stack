@@ -20,10 +20,6 @@ http://IPOFDOCKERHOST:5984/_utils/database.html?sphere_modelstore/_all_docs
 
 # rabbitmq 
 
-```
-docker exec -i spherestack_sphererabbit_1 rabbitmq-plugins enable rabbitmq_mqtt
-```
-
 http://IPOFDOCKERHOST:15672/#/
 
 # developing

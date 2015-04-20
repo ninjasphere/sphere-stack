@@ -29,7 +29,7 @@ activation:
     - USVC_CONFIG_ENV=docker
     - NODE_ENV=development
     - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
-    - usvc_amqp_url=amqp://admin:yST6wkBbVYyB@rabbit:5672
+    - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
   external_links:
     - spherestack_sphereredis_1:redis 
     - spherestack_spheremysql_1:mysql 
@@ -74,7 +74,7 @@ rpcservice:
     - DEBUG=*
     - USVC_CONFIG_ENV=docker
     - NODE_ENV=development
-    - usvc_amqp_url=amqp://admin:yST6wkBbVYyB@rabbit:5672    
+    - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672    
   external_links:
     - spherestack_sphereredis_1:redis 
     - spherestack_spheremysql_1:mysql 
@@ -105,7 +105,7 @@ stateservice:
   environment:
     - DEBUG=true
     - REDIS_URL=redis://redis:6379
-    - RABBIT_URL=amqp://admin:yST6wkBbVYyB@rabbit:5672
+    - RABBIT_URL=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
   external_links:
     - spherestack_sphereredis_1:redis 
     - spherestack_sphererabbit_1:rabbit
