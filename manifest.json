@@ -1,0 +1,9 @@
+{
+   "_id": "_design/manifest",
+   "language": "javascript",
+   "views": {
+       "manifest": {
+           "map": "function(doc) {\n  if (doc.model) {\n    emit([doc.user.id, doc.model.type], {\n      last_modified: doc.last_modified,\n      id: doc.model.id\n    });\n    emit([doc.user.id, doc.model.type, doc.model.id], null);\n  }\n}"
+       }
+   }
+}

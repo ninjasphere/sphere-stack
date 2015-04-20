@@ -1,0 +1,126 @@
+# sphere-stack services
+#
+# This is all the microservices which combine to make the sphere cloud.
+#
+# NOTE: You will want to reconfigure all the passwords in here and the test_sql.sql file.
+# 
+
+# identity provider
+douitsu:
+  image: docker-registry.sphere.ninja/ninjablocks/douitsu:d2918ce
+  environment:
+    - DEBUG=*
+    - CACHE_URL=redis://redis
+    - DB_URL=mysql://douitsu:douitsu@mysql:3306/douitsu
+    - NODE_ENV=production
+  external_links:
+    - spherestack_sphereredis_1:redis 
+    - spherestack_spheremysql_1:mysql 
+  ports:
+    - "3333:3333"
+  expose:
+    - "3333"
+
+# sphere activation service
+activation:
+  image: docker-registry.sphere.ninja/ninjablocks/sphere-activation-service:10bd436
+  environment:
+    - DEBUG=*
+    - USVC_CONFIG_ENV=docker
+    - NODE_ENV=development
+    - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
+    - usvc_amqp_url=amqp://admin:yST6wkBbVYyB@rabbit:5672
+  external_links:
+    - spherestack_sphereredis_1:redis 
+    - spherestack_spheremysql_1:mysql 
+    - spherestack_sphererabbit_1:rabbit
+  ports:
+    - "5100:5100"
+  expose:
+    - "5100"
+
+# sphere rest api service
+apiservice:
+  image: docker-registry.sphere.ninja/ninjablocks/sphere-api-service:e2ceef2
+  environment:
+    - DEBUG=*
+    - USVC_CONFIG_ENV=docker
+    - NODE_ENV=development
+    - usvc_amqp_url=amqp://admin:yST6wkBbVYyB@rabbit:5672
+    - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
+    - usvc_activationService_signing_secret=NefofvigdadEjlien8Schyk8
+    - usvc_modelStoreService_signing_secret=NefofvigdadEjlien8Schyk8
+    - usvc_sessions_secret=OjIakHisvaykafmoafOabFey
+    - usvc_oauth_callbackURL=http://apiservice:5200/auth/ninja/callback
+    - usvc_oauth_clientID=app_10f0185f9e393da7f94f5095046f3809
+    - usvc_oauth_clientSecret=sk_3992b748a167928a4fb76d12a1c018a7
+  links:
+    - activation:activation
+    - douitsu:douitsu
+    - modelservice:modelservice
+  external_links:
+    - spherestack_sphereredis_1:redis 
+    - spherestack_spheremysql_1:mysql 
+    - spherestack_sphererabbit_1:rabbit
+  ports:
+    - "5200:5200"
+  expose:
+    - "5200"
+
+# sphere rpc service
+rpcservice:
+  image: docker-registry.sphere.ninja/ninjablocks/sphere-rpc-service:d781a8e
+  environment:
+    - DEBUG=*
+    - USVC_CONFIG_ENV=docker
+    - NODE_ENV=development
+    - usvc_amqp_url=amqp://admin:yST6wkBbVYyB@rabbit:5672    
+  external_links:
+    - spherestack_sphereredis_1:redis 
+    - spherestack_spheremysql_1:mysql 
+    - spherestack_sphererabbit_1:rabbit
+  ports:
+    - "5900:5900"
+  expose:
+    - "5900"
+
+# sphere model store service
+modelservice:
+  image: docker-registry.sphere.ninja/ninjablocks/sphere-modelstore-service:5f054ed
+  environment:
+    - DEBUG=*
+    - USVC_CONFIG_ENV=docker
+    - NODE_ENV=development
+    - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
+  external_links:
+    - spherestack_spherecouch_1:couchdb 
+  ports:
+    - "5600:5600"
+  expose:
+    - "5600"
+
+# sphere state service
+stateservice:
+  image: docker-registry.sphere.ninja/ninjablocks/sphere-state-service:b998e0d
+  environment:
+    - DEBUG=true
+    - REDIS_URL=redis://redis:6379
+    - RABBIT_URL=amqp://admin:yST6wkBbVYyB@rabbit:5672
+  external_links:
+    - spherestack_sphereredis_1:redis 
+    - spherestack_sphererabbit_1:rabbit
+  ports:
+    - "6100:6100"
+  expose:
+    - "6100"
+
+# sphere mqtt proxy
+mqttproxy:
+  image: docker-registry.sphere.ninja/ninjablocks/mqtt-proxy:04c181a
+  external_links:
+    - spherestack_spheremysql_1:mysql 
+    - spherestack_sphererabbit_1:rabbit
+  ports:
+    - "6300:6300"
+  expose:
+    - "6300"

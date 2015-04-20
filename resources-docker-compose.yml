@@ -1,0 +1,65 @@
+# sphere-stack resources
+#
+# This is all the microservices which combine to make the sphere cloud resource services.
+#
+# NOTE: You will want to reconfigure all the passwords in here and the test_sql.sql file.
+# 
+
+# douitsu, activation databases
+spheremysql:
+  privileged: true
+  image: tutum/mysql
+  ports:
+    - "3306:3306"
+  volumes:
+    - /data/mysql:/var/lib/mysql
+  environment:
+    - MYSQL_USER="ninja"
+    - MYSQL_PASS="ninja"
+  expose:
+    - "3306"
+
+# document store
+spherecouch:
+  image: klaemo/couchdb
+  ports:
+    - "5984:5984"
+  volumes:
+    - /data/couchdb:/usr/local/var/lib/couchdb
+  expose:
+    - "5984"
+
+# message broker
+sphererabbit:
+  hostname: sphererabbit
+  image: ninjablocks/rabbitmq
+  volumes:
+    - /data/rabbitmq:/var/lib/rabbitmq
+  ports:
+    - "1883:1883"
+    - "5672:5672"
+    - "15672:15672"
+  expose:
+    - "1883"
+    - "5672"
+    - "15672"
+
+# cache
+sphereredis:
+  image: redis
+  ports:
+    - "6379:6379"
+  expose:
+    - "6379"
+
+# cache
+spherehaproxy:
+  image: ninjablocks/haproxy:95d19f6
+  volumes:
+    - haproxy/:/haproxy-override
+  ports:
+    - "80:80"
+    - "443:443"
+  expose:
+    - "80"
+    - "443"
