@@ -85,7 +85,7 @@ cat haproxy/ssl/sphere.key haproxy/ssl/sphere.crt >> haproxy/ssl/wildcard.pem
 Then start the services.
 
 ```
-docker-compose -f resources-docker-compose.yml
+docker-compose -f services-docker-compose.yml up -d
 ```
 
 # Licensing
