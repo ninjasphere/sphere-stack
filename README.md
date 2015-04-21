@@ -42,6 +42,8 @@ These are the services which ninjablocks developed.
 docker-compose -f resources-docker-compose.yml -d
 ```
 
+## databases
+
 Then to if this is the first time you have run it you need to import the SQL database.
 
 ```
@@ -54,6 +56,31 @@ Then ensure the couchdb database is created and create the secondary index.
 docker exec -i spherestack_spherecouch_1 curl -X PUT http://127.0.0.1:5984/sphere_modelstore
 curl -X PUT http://IPOFDOCKERHOST.local:5984/sphere_modelstore/_design/manifest -d @manifest.json
 ```
+
+## openssl 
+
+```
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout haproxy/ssl/sphere.key -out haproxy/ssl/sphere.crt
+```
+
+When you hit "ENTER", you will be asked a number of questions.
+
+```
+Country Name (2 letter code) [AU]:US
+State or Province Name (full name) [Some-State]:New York
+Locality Name (eg, city) []:New York City
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:Your Company
+Organizational Unit Name (eg, section) []:Department of Kittens
+Common Name (e.g. server FQDN or YOUR name) []:*.your_domain.com
+Email Address []:your_email@domain.com
+```
+Combine these files.
+
+```
+cat haproxy/ssl/sphere.key haproxy/ssl/sphere.crt >> haproxy/ssl/wildcard.pem
+```
+
+## services
 
 Then start the services.
 
