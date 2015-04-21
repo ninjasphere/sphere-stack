@@ -116,7 +116,10 @@ stateservice:
 
 # sphere mqtt proxy
 mqttproxy:
-  image: docker-registry.sphere.ninja/ninjablocks/mqtt-proxy:04c181a
+  image: ninjablocks/mqtt-proxy:61ed6e3
+  environment:
+    - BACKEND_USER=admin
+    - BACKEND_PASS=ofjoHyibkaibHiammagsenun
   external_links:
     - spherestack_spheremysql_1:mysql 
     - spherestack_sphererabbit_1:rabbit
@@ -132,13 +135,14 @@ spherehaproxy:
     - haproxy/:/haproxy-override
   links:
     - apiservice:apiservice
-    - activation:activation
     - douitsu:douitsu
-    - modelservice:modelservice
+    - mqttproxy:mqttproxy
   ports:
     - "80:80"
     - "443:443"
+    - "8883:8883"
   expose:
     - "80"
     - "443"
+    - "8883:8883"
 
