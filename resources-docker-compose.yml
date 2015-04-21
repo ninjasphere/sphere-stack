@@ -34,7 +34,7 @@ sphererabbit:
   hostname: sphererabbit
   image: ninjablocks/rabbitmq
   environment:
-    - RABBITMQ_PASS="ofjoHyibkaibHiammagsenun"
+    - RABBITMQ_PASS=ofjoHyibkaibHiammagsenun
   volumes:
     - /data/rabbitmq:/var/lib/rabbitmq
   ports:
@@ -53,15 +53,3 @@ sphereredis:
     - "6379:6379"
   expose:
     - "6379"
-
-# cache
-spherehaproxy:
-  image: ninjablocks/haproxy:95d19f6
-  volumes:
-    - haproxy/:/haproxy-override
-  ports:
-    - "80:80"
-    - "443:443"
-  expose:
-    - "80"
-    - "443"

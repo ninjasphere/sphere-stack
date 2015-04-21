@@ -46,7 +46,7 @@ apiservice:
     - DEBUG=*
     - USVC_CONFIG_ENV=docker
     - NODE_ENV=development
-    - usvc_amqp_url=amqp://admin:yST6wkBbVYyB@rabbit:5672
+    - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
     - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
     - usvc_activationService_signing_secret=NefofvigdadEjlien8Schyk8
     - usvc_modelStoreService_signing_secret=NefofvigdadEjlien8Schyk8
@@ -124,3 +124,21 @@ mqttproxy:
     - "6300:6300"
   expose:
     - "6300"
+
+# cache
+spherehaproxy:
+  image: ninjablocks/haproxy:95d19f6
+  volumes:
+    - haproxy/:/haproxy-override
+  links:
+    - apiservice:apiservice
+    - activation:activation
+    - douitsu:douitsu
+    - modelservice:modelservice
+  ports:
+    - "80:80"
+    - "443:443"
+  expose:
+    - "80"
+    - "443"
+
