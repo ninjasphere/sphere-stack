@@ -38,6 +38,11 @@ These are the services which ninjablocks developed.
 
 # running
 
+First CHANGE PASSWORDS as follows:
+
+1. Any variable containing `signing_secret`, at the moment for simplicity set them all to the same thing.
+2. RabbitMQ admin password, and all the associated connection strings beginning with `amqp://`. 
+
 ```
 docker-compose -f resources-docker-compose.yml -d
 ```
@@ -87,6 +92,16 @@ Then start the services.
 ```
 docker-compose -f services-docker-compose.yml up -d
 ```
+
+## security
+
+On the VPS you only need to expose ports 80, 443 and 8883, the rest can be accessed using SSH port forwarding.
+
+```
+ssh -D 3000 USERNAME@HOST
+```
+
+Then configure your browser as required to use this socks proxy using something like [switchysharp](https://chrome.google.com/webstore/detail/proxy-switchysharp/dpplabbmogkhghncfbfdeeokoefdjegm?hl=en).
 
 # Licensing
 
