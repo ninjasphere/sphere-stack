@@ -17,6 +17,8 @@ sudo ufw allow 2376/tcp
 sudo ufw enable
 ```
 
+Note: `2376/tcp` is used by docker-machine to access docker over ssl.
+
 To see the status.
 
 ```
