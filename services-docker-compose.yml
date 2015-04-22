@@ -7,7 +7,7 @@
 
 # identity provider
 douitsu:
-  image: docker-registry.sphere.ninja/ninjablocks/douitsu:d2918ce
+  image: ninjasphere/douitsu:d2918ce
   environment:
     - DEBUG=*
     - CACHE_URL=redis://redis
@@ -23,7 +23,7 @@ douitsu:
 
 # sphere activation service
 activation:
-  image: docker-registry.sphere.ninja/ninjablocks/sphere-activation-service:10bd436
+  image: ninjasphere/sphere-activation-service:10bd436
   environment:
     - DEBUG=*
     - USVC_CONFIG_ENV=docker
@@ -41,7 +41,7 @@ activation:
 
 # sphere rest api service
 apiservice:
-  image: docker-registry.sphere.ninja/ninjablocks/sphere-api-service:e2ceef2
+  image: ninjasphere/sphere-api-service:e2ceef2
   environment:
     - DEBUG=*
     - USVC_CONFIG_ENV=docker
@@ -70,7 +70,7 @@ apiservice:
 
 # sphere rpc service
 rpcservice:
-  image: docker-registry.sphere.ninja/ninjablocks/sphere-rpc-service:d781a8e
+  image: ninjasphere/sphere-rpc-service:d781a8e
   environment:
     - DEBUG=*
     - USVC_CONFIG_ENV=docker
@@ -87,7 +87,7 @@ rpcservice:
 
 # sphere model store service
 modelservice:
-  image: docker-registry.sphere.ninja/ninjablocks/sphere-modelstore-service:5f054ed
+  image: ninjasphere/sphere-modelstore-service:5f054ed
   environment:
     - DEBUG=*
     - USVC_CONFIG_ENV=docker
@@ -102,7 +102,7 @@ modelservice:
 
 # sphere state service
 stateservice:
-  image: docker-registry.sphere.ninja/ninjablocks/sphere-state-service:b998e0d
+  image: ninjasphere/sphere-state-service:b998e0d
   environment:
     - DEBUG=true
     - REDIS_URL=redis://redis:6379
