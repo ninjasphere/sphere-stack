@@ -93,6 +93,20 @@ Then start the services.
 docker-compose -f services-docker-compose.yml up -d
 ```
 
+## douitsu
+
+* Register your first user in douitsu, this will be used to setup the oauth2 applications.
+
+* Add an application for the sphere API service.
+
+* Enable some flags for the REST API service application.
+
+```
+update application set is_ninja_official=1 where id = '<UUID primary key for this application>';
+```
+
+* Update the environment variables for this application.
+
 ## security
 
 On the VPS you only need to expose ports 80, 443 and 8883, the rest can be accessed using SSH port forwarding.

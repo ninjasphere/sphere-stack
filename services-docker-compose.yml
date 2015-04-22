@@ -54,6 +54,7 @@ apiservice:
     - usvc_oauth_callbackURL=http://apiservice:5200/auth/ninja/callback
     - usvc_oauth_clientID=app_10f0185f9e393da7f94f5095046f3809
     - usvc_oauth_clientSecret=sk_3992b748a167928a4fb76d12a1c018a7
+    - usvc_sessions_secret=EcBetvabdigobejBararuch2
   links:
     - activation:activation
     - douitsu:douitsu
