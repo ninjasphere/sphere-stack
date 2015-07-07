@@ -44,7 +44,7 @@ First CHANGE PASSWORDS as follows:
 2. RabbitMQ admin password, and all the associated connection strings beginning with `amqp://`. 
 
 ```
-docker-compose -f resources-docker-compose.yml -d
+docker-compose -f resources-docker-compose.yml up -d
 ```
 
 ## databases
