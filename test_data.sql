@@ -141,16 +141,16 @@ CREATE TABLE `nodes` (
   `hardware_type` varchar(64) NOT NULL,
 --  `token` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `mqtt_client_id` int(20) not null auto_increment unique first,
-  PRIMARY KEY (`user_id`, `node_id`)
---  UNIQUE KEY `token_UNIQUE` (`token`)
+  `mqtt_client_id` int(20) not null auto_increment,
+  PRIMARY KEY (`user_id`, `node_id`),
+  UNIQUE KEY `mqtt_client_id_key` (`mqtt_client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `users` (
   `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `name` varchar(128) NOT NULL,
   `email` varchar(128) NOT NULL,
-  `lastAccessToken` varchar(128) NOT NULL,
+  `lastAccessToken` varchar(128) NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `sphere_network_key` varchar(64) NOT NULL,
   PRIMARY KEY (`user_id`)
