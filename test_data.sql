@@ -114,6 +114,8 @@ CREATE TABLE accesstoken (
   clientID varchar(255) NOT NULL,
   clientName varchar(255) NOT NULL,
   type varchar(255) NOT NULL DEFAULT 'application',
+  `mqtt_client_id` int(20) NOT NULL AUTO_INCREMENT UNIQUE,
+  `node_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -127,6 +129,7 @@ CREATE TABLE accesstoken_scope (
   FOREIGN KEY (accesstoken) REFERENCES accesstoken (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 CREATE DATABASE IF NOT EXISTS `ninja`;
 USE `ninja`;
 
@@ -138,6 +141,7 @@ CREATE TABLE `nodes` (
   `hardware_type` varchar(64) NOT NULL,
 --  `token` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `mqtt_client_id` int(20) not null auto_increment unique first,
   PRIMARY KEY (`user_id`, `node_id`)
 --  UNIQUE KEY `token_UNIQUE` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -148,14 +152,14 @@ CREATE TABLE `users` (
   `email` varchar(128) NOT NULL,
   `lastAccessToken` varchar(128) NOT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `sphere_network_key` varchar(64) NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sites` (
   `user_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `site_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `master_node_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `master_node_id` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`, `site_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
