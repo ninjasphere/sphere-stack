@@ -117,7 +117,7 @@ stateservice:
 
 # sphere mqtt proxy
 mqttproxy:
-  image: ninjablocks/mqtt-proxy:61ed6e3
+  image: ninjablocks/mqtt-proxy:e272ac0
   environment:
     - BACKEND_USER=admin
     - BACKEND_PASS=ofjoHyibkaibHiammagsenun
