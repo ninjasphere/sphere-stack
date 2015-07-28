@@ -14,8 +14,8 @@ douitsu:
     - DB_URL=mysql://douitsu:douitsu@mysql:3306/douitsu
     - NODE_ENV=production
   external_links:
-    - spherestack_sphereredis_1:redis 
-    - spherestack_spheremysql_1:mysql 
+    - spherestack_sphereredis_1:redis
+    - spherestack_spheremysql_1:mysql
   ports:
     - "3333:3333"
   expose:
@@ -31,8 +31,8 @@ activation:
     - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
     - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
   external_links:
-    - spherestack_sphereredis_1:redis 
-    - spherestack_spheremysql_1:mysql 
+    - spherestack_sphereredis_1:redis
+    - spherestack_spheremysql_1:mysql
     - spherestack_sphererabbit_1:rabbit
   ports:
     - "5100:5100"
@@ -60,8 +60,8 @@ apiservice:
     - douitsu:douitsu
     - modelservice:modelservice
   external_links:
-    - spherestack_sphereredis_1:redis 
-    - spherestack_spheremysql_1:mysql 
+    - spherestack_sphereredis_1:redis
+    - spherestack_spheremysql_1:mysql
     - spherestack_sphererabbit_1:rabbit
   ports:
     - "5200:5200"
@@ -77,11 +77,11 @@ rpcservice:
     - DEBUG=*
     - USVC_CONFIG_ENV=docker
     - NODE_ENV=development
-    - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672    
+    - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
     - usvc_modelStoreService_signing_secret=NefofvigdadEjlien8Schyk8
   external_links:
-    - spherestack_sphereredis_1:redis 
-    - spherestack_spheremysql_1:mysql 
+    - spherestack_sphereredis_1:redis
+    - spherestack_spheremysql_1:mysql
     - spherestack_sphererabbit_1:rabbit
   ports:
     - "5900:5900"
@@ -97,7 +97,7 @@ modelservice:
     - NODE_ENV=development
     - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
   external_links:
-    - spherestack_spherecouch_1:couchdb 
+    - spherestack_spherecouch_1:couchdb
   ports:
     - "5600:5600"
   expose:
@@ -111,7 +111,7 @@ stateservice:
     - REDIS_URL=redis://redis:6379
     - RABBIT_URL=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
   external_links:
-    - spherestack_sphereredis_1:redis 
+    - spherestack_sphereredis_1:redis
     - spherestack_sphererabbit_1:rabbit
   ports:
     - "6100:6100"
@@ -125,7 +125,7 @@ mqttproxy:
     - BACKEND_USER=admin
     - BACKEND_PASS=ofjoHyibkaibHiammagsenun
   external_links:
-    - spherestack_spheremysql_1:mysql 
+    - spherestack_spheremysql_1:mysql
     - spherestack_sphererabbit_1:rabbit
   ports:
     - "6300:6300"
