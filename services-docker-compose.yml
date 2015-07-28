@@ -71,11 +71,14 @@ apiservice:
 # sphere rpc service
 rpcservice:
   image: ninjasphere/sphere-rpc-service:e4de51c
+  links:
+    - modelservice:modelservice
   environment:
     - DEBUG=*
     - USVC_CONFIG_ENV=docker
     - NODE_ENV=development
     - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672    
+    - usvc_modelStoreService_signing_secret=NefofvigdadEjlien8Schyk8
   external_links:
     - spherestack_sphereredis_1:redis 
     - spherestack_spheremysql_1:mysql 
