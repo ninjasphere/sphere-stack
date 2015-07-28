@@ -2,7 +2,7 @@
 
 This setup is used to launch a standalone copy of the sphere platform either on your local machine or on a cloud host.
 
-# prerequisites 
+# prerequisites
 
 To start you need a host running ubuntu 14.04.02 with docker installed, this can be setup using docker-machine.
 
@@ -41,7 +41,7 @@ These are the services which ninjablocks developed.
 First CHANGE PASSWORDS as follows:
 
 1. Any variable containing `signing_secret`, at the moment for simplicity set them all to the same thing.
-2. RabbitMQ admin password, and all the associated connection strings beginning with `amqp://`. 
+2. RabbitMQ admin password, and all the associated connection strings beginning with `amqp://`.
 
 ```
 docker-compose -f resources-docker-compose.yml up -d
@@ -62,7 +62,7 @@ docker exec -i spherestack_spherecouch_1 curl -X PUT http://127.0.0.1:5984/spher
 curl -X PUT http://IPOFDOCKERHOST.local:5984/sphere_modelstore/_design/manifest -d @manifest.json
 ```
 
-## openssl 
+## openssl
 
 ```
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout haproxy/ssl/sphere.key -out haproxy/ssl/sphere.crt
@@ -76,7 +76,7 @@ State or Province Name (full name) [Some-State]:New York
 Locality Name (eg, city) []:New York City
 Organization Name (eg, company) [Internet Widgits Pty Ltd]:Your Company
 Organizational Unit Name (eg, section) []:Department of Kittens
-Common Name (e.g. server FQDN or YOUR name) []:*.your_domain.com
+Common Name (e.g. server FQDN or YOUR name) []:*.example.com
 Email Address []:your_email@domain.com
 ```
 Combine these files.
@@ -105,7 +105,19 @@ docker-compose -f services-docker-compose.yml up -d
 update application set is_ninja_official=1 where id = '<UUID primary key for this application>';
 ```
 
-* Update the environment variables for this application.
+* Update the following environment variables for this application in services-docker-compose.yml:
+
+	* usvc_oauth_callbackURL=https://apiservice.example.com/auth/ninja/callback
+    * usvc_oauth_authorizationURL=https://douitsu.example.com/dialog/authorize
+    * usvc_oauth_clientID=app_XX
+    * usvc_oauth_clientSecret=sk_XX
+
+* Restart the composition
+```
+docker-compose -f services-docker-compose.yml stop
+docker-compose -f services-docker-compose.yml rm
+docker-compose -f services-docker-compose.yml up
+```
 
 ## security
 
