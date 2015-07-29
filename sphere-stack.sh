@@ -43,8 +43,8 @@ create() {
 sudo mkdir -p /mnt/sda1/var/lib/sphere-stack &&
 sudo ln -sf /mnt/sda1/var/lib/sphere-stack /var/lib/sphere-stack
 EOF
-            docker-compose -f resources-docker-compose.yml up -d
         fi
+        docker-compose -f resources-docker-compose.yml up -d
     }
 
     couch() {
