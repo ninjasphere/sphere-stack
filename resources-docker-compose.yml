@@ -3,10 +3,11 @@
 # This is all the microservices which combine to make the sphere cloud resource services.
 #
 # NOTE: You will want to reconfigure all the passwords in here and the test_sql.sql file.
-# 
+#
 
 # douitsu, activation databases
 spheremysql:
+  env_file: config/spheremysql
   privileged: true
   image: tutum/mysql
   ports:
@@ -21,6 +22,7 @@ spheremysql:
 
 # document store
 spherecouch:
+  env_file: config/spherecouch
   image: klaemo/couchdb
   ports:
     - "5984:5984"
@@ -33,8 +35,7 @@ spherecouch:
 sphererabbit:
   hostname: sphererabbit
   image: ninjablocks/rabbitmq
-  environment:
-    - RABBITMQ_PASS=ofjoHyibkaibHiammagsenun
+  env_file: config/sphererabbit
   volumes:
     - /var/lib/sphere-stack/rabbitmq:/var/lib/rabbitmq
   ports:
@@ -48,6 +49,7 @@ sphererabbit:
 
 # cache
 sphereredis:
+  env_file: config/sphereredis
   image: redis
   ports:
     - "6379:6379"

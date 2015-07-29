@@ -3,16 +3,12 @@
 # This is all the microservices which combine to make the sphere cloud.
 #
 # NOTE: You will want to reconfigure all the passwords in here and the test_sql.sql file.
-# 
+#
 
 # identity provider
 douitsu:
   image: ninjasphere/douitsu:6b1d73e
-  environment:
-    - DEBUG=*
-    - CACHE_URL=redis://redis
-    - DB_URL=mysql://douitsu:douitsu@mysql:3306/douitsu
-    - NODE_ENV=production
+  env_file: config/douitsu
   external_links:
     - spherestack_sphereredis_1:redis
     - spherestack_spheremysql_1:mysql
@@ -24,12 +20,7 @@ douitsu:
 # sphere activation service
 activation:
   image: ninjasphere/sphere-activation-service:90c74a0
-  environment:
-    - DEBUG=*
-    - USVC_CONFIG_ENV=docker
-    - NODE_ENV=development
-    - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
-    - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
+  env_file: config/activation
   external_links:
     - spherestack_sphereredis_1:redis
     - spherestack_spheremysql_1:mysql
@@ -41,21 +32,8 @@ activation:
 
 # sphere rest api service
 apiservice:
+  env_file: config/apiservice
   image: ninjasphere/sphere-api-service:a13fb9f
-  environment:
-    - DEBUG=*
-    - USVC_CONFIG_ENV=docker
-    - NODE_ENV=development
-    - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
-    - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
-    - usvc_activationService_signing_secret=NefofvigdadEjlien8Schyk8
-    - usvc_modelStoreService_signing_secret=NefofvigdadEjlien8Schyk8
-    - usvc_sessions_secret=OjIakHisvaykafmoafOabFey
-    - usvc_oauth_callbackURL=https://apiservice.example.com/auth/ninja/callback
-    - usvc_oauth_authorizationURL=https://douitsu.example.com/dialog/authorize
-    - usvc_oauth_clientID=app_XX
-    - usvc_oauth_clientSecret=sk_XX
-    - usvc_sessions_secret=EcBetvabdigobejBararuch2
   links:
     - activation:activation
     - douitsu:douitsu
@@ -74,12 +52,7 @@ rpcservice:
   image: ninjasphere/sphere-rpc-service:e4de51c
   links:
     - modelservice:modelservice
-  environment:
-    - DEBUG=*
-    - USVC_CONFIG_ENV=docker
-    - NODE_ENV=development
-    - usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
-    - usvc_modelStoreService_signing_secret=NefofvigdadEjlien8Schyk8
+  env_file: config/rpcservice
   external_links:
     - spherestack_sphereredis_1:redis
     - spherestack_spheremysql_1:mysql
@@ -92,11 +65,7 @@ rpcservice:
 # sphere model store service
 modelservice:
   image: ninjasphere/sphere-modelstore-service:2463a5e
-  environment:
-    - DEBUG=*
-    - USVC_CONFIG_ENV=docker
-    - NODE_ENV=development
-    - usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
+  env_file: config/modelservice
   external_links:
     - spherestack_spherecouch_1:couchdb
   ports:
@@ -107,10 +76,7 @@ modelservice:
 # sphere state service
 stateservice:
   image: ninjasphere/sphere-state-service:2a2b68c
-  environment:
-    - DEBUG=true
-    - REDIS_URL=redis://redis:6379
-    - RABBIT_URL=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
+  env_file: config/stateservice
   external_links:
     - spherestack_sphereredis_1:redis
     - spherestack_sphererabbit_1:rabbit
@@ -122,9 +88,7 @@ stateservice:
 # sphere mqtt proxy
 mqttproxy:
   image: ninjablocks/mqtt-proxy:e272ac0
-  environment:
-    - BACKEND_USER=admin
-    - BACKEND_PASS=ofjoHyibkaibHiammagsenun
+  env_file: config/mqttproxy
   external_links:
     - spherestack_spheremysql_1:mysql
     - spherestack_sphererabbit_1:rabbit
@@ -136,6 +100,7 @@ mqttproxy:
 # cache
 spherehaproxy:
   image: ninjablocks/haproxy:95d19f6
+  env_file: config/spherehaproxy
   volumes:
     - haproxy/:/haproxy-override
   links:

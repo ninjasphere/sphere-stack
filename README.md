@@ -135,7 +135,7 @@ docker exec -it spherestack_spheremysql_1 mysql douitsu -uroot;
 update application set is_ninja_official=1 where appid = '<app id for this application>';
 ```
 
-* Update the following environment variables for this application in services-docker-compose.yml:
+* Update the following environment variables for this application in config/apiservice:
 
 	* usvc_oauth_callbackURL=https://apiservice.example.com/auth/ninja/callback
     * usvc_oauth_authorizationURL=https://douitsu.example.com/dialog/authorize

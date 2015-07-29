@@ -1,0 +1,13 @@
+DEBUG=*
+USVC_CONFIG_ENV=docker
+NODE_ENV=development
+usvc_amqp_url=amqp://admin:ofjoHyibkaibHiammagsenun@rabbit:5672
+usvc_rpcService_signing_secret=NefofvigdadEjlien8Schyk8
+usvc_activationService_signing_secret=NefofvigdadEjlien8Schyk8
+usvc_modelStoreService_signing_secret=NefofvigdadEjlien8Schyk8
+usvc_sessions_secret=OjIakHisvaykafmoafOabFey
+usvc_oauth_callbackURL=https://apiservice.example.com/auth/ninja/callback
+usvc_oauth_authorizationURL=https://douitsu.example.com/dialog/authorize
+usvc_oauth_clientID=app_XX
+usvc_oauth_clientSecret=sk_XX
+usvc_sessions_secret=EcBetvabdigobejBararuch2
