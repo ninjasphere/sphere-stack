@@ -37,6 +37,7 @@ create() {
 
     config() {
 	mkdir -p config
+	chmod 0700 config
 	cd templates
 	for f in *.sh; do
 	    (. ./$f) > ../config/$(basename $f .sh) || die "died while running template $f"
