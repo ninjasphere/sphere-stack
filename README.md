@@ -55,12 +55,22 @@ Then to if this is the first time you have run it you need to import the SQL dat
 cat test_data.sql | docker exec -i spherestack_spheremysql_1 mysql -uroot
 ```
 
-Then ensure the couchdb database is created and create the secondary index.
+Then ensure the couchdb database is created
 
 ```
 docker exec -i spherestack_spherecouch_1 curl -X PUT http://127.0.0.1:5984/sphere_modelstore
+```
+
+Then create the the secondary index.
+```
 curl -X PUT http://IPOFDOCKERHOST.local:5984/sphere_modelstore/_design/manifest -d @manifest.json
 ```
+
+Or if you are using boot2docker, you can run 
+```
+curl -X PUT http://$(boot2docker ip):5984/sphere_modelstore/_design/manifest -d @manifest.json
+```
+
 
 ## openssl
 
