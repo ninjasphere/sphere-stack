@@ -57,6 +57,7 @@ EOF
     }
 
     keys() {
+	mkdir -p haproxy/ssl &&
         openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout haproxy/ssl/sphere.key -out haproxy/ssl/sphere.crt &&
         cat haproxy/ssl/sphere.key haproxy/ssl/sphere.crt >> haproxy/ssl/wildcard.pem
     }
