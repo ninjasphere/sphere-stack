@@ -5,6 +5,7 @@ die() {
     exit 1
 }
 
+
 ip() {
     if test -n "$DOCKER_HOST"; then
 	local ip=${DOCKER_HOST#tcp://};
@@ -15,9 +16,7 @@ ip() {
 }
 
 domain() {
-    local domain=$(cat haproxy/ssl/wildcard.pem | openssl x509 -text | grep DirName | sed -n "s/.*CN=\*.//;s|/.*||p")
-    test -n "$domain" || die "make sure you have run create-keys with domain like *.example.com first"
-    echo $domain
+    echo ${NINJA_CLOUD_DOMAIN}
 }
 
 machine() {
@@ -35,7 +34,7 @@ create() {
 	mkdir -p config
 	cd templates
 	for f in *.sh; do
-	    ./$f > ../config/$(basename $f .sh)
+	    (. ./$f) > ../config/$(basename $f .sh) || die "died while running template $f"
 	done
 	cd ..
     }
@@ -154,8 +153,41 @@ logs() {
     esac
 }
 
+pwgen() {
+    cat /dev/random | dd count=1 bs=256 2>/dev/null | openssl base64 | cut -c1-20 | head -1
+}
+
+edit() {
+    ${EDITOR:-vi} .sphere-stack/master
+    create config
+}
+
+init() {
+    mkdir -p .sphere-stack
+    chmod 0700 .sphere-stack
+    if ! test -f .sphere-stack/master; then
+	cat > .sphere-stack/master <<EOF
+NINJA_SIGNING_SECRET=$(pwgen);
+NINJA_SESSION_SECRET=$(pwgen);
+NINJA_RABBIT_SECRET=$(pwgen);
+NINJA_CLOUD_DOMAIN=example.com;
+NINJA_API_ENDPOINT=apiservice.\${NINJA_CLOUD_DOMAIN};
+NINJA_ID_ENDPOINT=douitsu.\${NINJA_CLOUD_DOMAIN};
+NINJA_APP_TOKEN=app_XX;
+NINJA_APP_KEY=sk_XX;
+EOF
+        echo "./sphere-stack/master has been initialized"
+    else
+        echo "skipping initialization of .sphere-stack/master - existing tokens will be used"
+    fi
+    . .sphere-stack/master
+    create config
+}
+
 usage() {
     cat <<EOF
+$0 init                         - initialize the current directory with a default configuration
+$0 edit                         - edit the configuration
 $0 create                       - create the couch database
 $0 ip                           - the ip of the docker machine
 $0 domain                       - the domain of the stack
@@ -165,19 +197,24 @@ $0 create services              - create the services composition
 $0 create couch                 - create the couch data store
 $0 create mysql                 - create the mysql data store
 $0 create keys                  - create the keys
-$0 restart [resources|services] - restart the specified composition
 $0 start [resources|services]   - start the specified composition
 $0 stop [resources|services]    - stop the specified composition
 $0 logs [resources|services]    - logs from the specified composition
+$0 restart [resources|services] - restart the specified composition
 EOF
 }
 
 cmd=$1
 shift 1
 case $cmd in
-    create|ip|domain|hosts-append|machine|start|stop|logs|recreate)
+    init)
+       $cmd "$@"
+    ;;
+    create|ip|domain|hosts-append|machine|start|stop|logs|recreate|init|edit)
+       test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
+       . .sphere-stack/master
 	   $cmd "$@"
-	;;
+       ;;
     *)
     	usage
 	;;

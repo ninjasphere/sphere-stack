@@ -38,13 +38,19 @@ These are the services which ninjablocks developed.
 
 # running
 
-First CHANGE PASSWORDS as follows:
+First, create a default configuration.
 
-1. Any variable containing `signing_secret`, at the moment for simplicity set them all to the same thing.
-2. RabbitMQ admin password, and all the associated connection strings beginning with `amqp://`.
+```
+./sphere.sh init
+```
 
-The following command will ensure that the /var/lib/sphere-stack on the docker host machine is pointing
-to a permanent location and then start the resources composition using docker-compose
+Review the configuration at any time with:
+
+```
+./sphere.sh edit
+```
+
+Now create the docker container (the so-called 'resources composition') that will contain the resource services.
 
 ```
 ./sphere.sh create resources
