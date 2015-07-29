@@ -37,7 +37,7 @@ create() {
 
     resources() {
         if test -z "$DOCKER_HOST"; then
-           mkdir /var/lib/sphere-stack || die "failed to create sphere-stack"
+           sudo mkdir -p /var/lib/sphere-stack || die "failed to create sphere-stack"
         else
            ssh -i ~/.docker/machine/machines/$(machine)/id_rsa docker@$(ip) <<EOF
 sudo mkdir -p /mnt/sda1/var/lib/sphere-stack &&
