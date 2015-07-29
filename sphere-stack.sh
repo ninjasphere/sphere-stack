@@ -167,6 +167,15 @@ edit() {
     create config
 }
 
+update() {
+	application-table() {
+		docker exec -i spherestack_spheremysql_1 mysql douitsu -uroot <<EOF
+update application set is_ninja_official=1 where appid = '${NINJA_APP_TOKEN}';
+EOF
+	}
+	"$@"
+}
+
 init() {
     mkdir -p .sphere-stack
     chmod 0700 .sphere-stack
@@ -216,7 +225,7 @@ case $cmd in
     init|version)
        $cmd "$@"
     ;;
-    create|ip|domain|hosts-append|machine|start|stop|logs|recreate|init|edit)
+    create|ip|domain|hosts-append|machine|start|stop|logs|recreate|init|edit|update)
        test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
        . .sphere-stack/master
 	   $cmd "$@"

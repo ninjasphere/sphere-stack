@@ -131,22 +131,19 @@ You can generate the correct entry with:
 	* "Your application’s callback URL; Read our OAuth documentation for more info." - https://apiservice.example.com/auth/ninja/callback
     * "This text is displayed to all potential users of your application." - "This is a private Ninja Cloud"
 
-After saving, take note of the "Client ID" and "Secret" under the "Application Details" title as you will need to
-edit services-docker-compose.yml to have these values.
+After saving, take note of the "Client ID" and "Secret" under the "Application Details" title.
+
+* Update the NINJA_APP_TOKEN and NINJA_APP_KEY variables with the values collected from the last step
+
+```
+./sphere-stack.sh edit
+```
 
 * Enable some flags for the REST API service application
 
 ```
-docker exec -it spherestack_spheremysql_1 mysql douitsu -uroot;
-update application set is_ninja_official=1 where appid = '<app id for this application>';
+./sphere-stack.sh update application-table
 ```
-
-* Update the following environment variables for this application in config/apiservice:
-
-	* usvc_oauth_callbackURL=https://apiservice.example.com/auth/ninja/callback
-    * usvc_oauth_authorizationURL=https://douitsu.example.com/dialog/authorize
-    * usvc_oauth_clientID=app_XX
-    * usvc_oauth_clientSecret=sk_XX
 
 * Recreate the services composition
 ```
