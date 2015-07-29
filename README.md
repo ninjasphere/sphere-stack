@@ -41,19 +41,19 @@ These are the services which ninjablocks developed.
 First, create a default configuration. This step will generate some unique keys.
 
 ```
-./sphere.sh init
+./sphere-stack.sh init
 ```
 
 Review the configuration at any time with:
 
 ```
-./sphere.sh edit
+./sphere-stack.sh edit
 ```
 
 Now create the docker container (the so-called 'resources composition') that will contain the resource services.
 
 ```
-./sphere.sh create resources
+./sphere-stack.sh create resources
 ```
 
 ## databases
