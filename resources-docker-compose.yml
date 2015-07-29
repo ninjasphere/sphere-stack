@@ -12,7 +12,7 @@ spheremysql:
   ports:
     - "3306:3306"
   volumes:
-    - /mnt/sda1/var/lib/sphere-stack/mysql:/var/lib/mysql
+    - /var/lib/sphere-stack/mysql:/var/lib/mysql
   environment:
     - MYSQL_USER="ninja"
     - MYSQL_PASS="ninja"
@@ -25,7 +25,7 @@ spherecouch:
   ports:
     - "5984:5984"
   volumes:
-    - /mnt/sda1/var/lib/sphere-stack/couchdb:/usr/local/var/lib/couchdb
+    - /var/lib/sphere-stack/couchdb:/usr/local/var/lib/couchdb
   expose:
     - "5984"
 
@@ -36,7 +36,7 @@ sphererabbit:
   environment:
     - RABBITMQ_PASS=ofjoHyibkaibHiammagsenun
   volumes:
-    - /mnt/sda1/var/lib/sphere-stack/rabbitmq:/var/lib/rabbitmq
+    - /var/lib/sphere-stack/rabbitmq:/var/lib/rabbitmq
   ports:
     - "1883:1883"
     - "5672:5672"
