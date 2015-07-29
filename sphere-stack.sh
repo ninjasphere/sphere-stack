@@ -82,7 +82,7 @@ EOF
 
 hosts-append() {
     local d=$(domain) || exit $?
-    echo $(ip) douitsu.$(domain) mqtt.$(domain) apiservice.$(domain)
+    echo $(ip) ${NINJA_API_ENDPOINT} ${NINJA_ID_ENDPOINT} mqtt.$d
 }
 
 start() {
