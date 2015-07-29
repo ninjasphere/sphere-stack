@@ -49,23 +49,22 @@ docker-compose -f resources-docker-compose.yml up -d
 
 ## databases
 
-Then to if this is the first time you have run it you need to import the SQL database.
+Then if this is the first time you have run it you need to import the SQL database.
 
 ```
-cat test_data.sql | docker exec -i spherestack_spheremysql_1 mysql -uroot
+./sphere-stack.sh create-mysql
 ```
 
 Then ensure the couchdb database is created and create the secondary index.
 
 ```
-docker exec -i spherestack_spherecouch_1 curl -X PUT http://127.0.0.1:5984/sphere_modelstore
-curl -X PUT http://IPOFDOCKERHOST.local:5984/sphere_modelstore/_design/manifest -d @manifest.json
+./sphere-stack.sh create-couch
 ```
 
 ## openssl
 
 ```
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout haproxy/ssl/sphere.key -out haproxy/ssl/sphere.crt
+./sphere-stack.sh create-keys
 ```
 
 When you hit "ENTER", you will be asked a number of questions.
@@ -79,11 +78,6 @@ Organizational Unit Name (eg, section) []:Department of Kittens
 Common Name (e.g. server FQDN or YOUR name) []:*.example.com
 Email Address []:your_email@domain.com
 ```
-Combine these files.
-
-```
-cat haproxy/ssl/sphere.key haproxy/ssl/sphere.crt >> haproxy/ssl/wildcard.pem
-```
 
 ## services
 
@@ -93,16 +87,49 @@ Then start the services.
 docker-compose -f services-docker-compose.yml up -d
 ```
 
+## IP address
+
+To learn the IP address of your docker-machine, run:
+
+```
+./sphere-stack.sh ip
+```
+
+## host file
+
+Add an entry like the following to your local hosts /etc/hosts file:
+
+```
+192.168.99.100 douitsu.example.com apiservice.example.com mqtt.example.com
+```
+
+You can generate the correct entry with:
+
+```
+./sphere-stack.sh hosts-append
+```
+
 ## douitsu
 
-* Register your first user in douitsu, this will be used to setup the oauth2 applications.
+* Register your first user in douitsu (https://douitsu.example.com), this will be used to setup the oauth2 applications.
+
+* You will probably find things easier if you choose trust to the self-signed certificate using the mechanisms provided by your browser &/or host operating systems.
 
 * Add an application for the sphere API service.
 
-* Enable some flags for the REST API service application.
+	* "Something that users will trust" - "Private Ninja Cloud"
+	* "The full URL to your application homepage." - https://apiservice.example.com
+	* "Your application’s callback URL; Read our OAuth documentation for more info." - https://apiservice.example.com/auth/ninja/callback
+    * "This text is displayed to all potential users of your application." - This is a private Ninja Cloud"
+
+After saving, take note of the "Client ID" and "Secret" under the "Application Details" title as you will need to
+edit services-docker-compose.yml to have these values.
+
+* Enable some flags for the REST API service application
 
 ```
-update application set is_ninja_official=1 where id = '<UUID primary key for this application>';
+docker exec -it spherestack_spheremysql_1 mysql douitsu -uroot;
+update application set is_ninja_official=1 where appid = '<app id for this application>';
 ```
 
 * Update the following environment variables for this application in services-docker-compose.yml:
@@ -132,3 +159,12 @@ Then configure your browser as required to use this socks proxy using something 
 # Licensing
 
 sphere-stack is licensed under the MIT License. See LICENSE for the full license text.
+
+# Revisions
+
+##1.1
+* added 'sphere-stack.sh' command with create-mysql, create-couch, create-keys steps`
+* ensured that resources used by resources-docker-compose.yml are located on persistent storage of the VM
+
+##1.0
+* Initial release
