@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+cat <<EOF2
 DEBUG=*
 USVC_CONFIG_ENV=docker
 NODE_ENV=development
@@ -11,3 +13,4 @@ usvc_oauth_authorizationURL=https://douitsu.example.com/dialog/authorize
 usvc_oauth_clientID=app_XX
 usvc_oauth_clientSecret=sk_XX
 usvc_sessions_secret=EcBetvabdigobejBararuch2
+EOF2

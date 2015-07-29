@@ -31,6 +31,15 @@ machine() {
 
 create() {
 
+    config() {
+	mkdir -p config
+	cd templates
+	for f in *.sh; do
+	    ./$f > ../config/$(basename $f .sh)
+	done
+	cd ..
+    }
+
     services() {
         docker-compose -f services-docker-compose.yml up -d
     }
