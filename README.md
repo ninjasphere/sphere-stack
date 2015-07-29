@@ -36,9 +36,9 @@ These are the services which ninjablocks developed.
 * [sphere-go-state-service](https://github.com/ninjablocks/sphere-go-state-service)
 * [mqtt-proxy](https://github.com/ninjablocks/mqtt-proxy)
 
-# running
+# configuring
 
-First, create a default configuration.
+First, create a default configuration. This step will generate some unique keys.
 
 ```
 ./sphere.sh init
@@ -146,6 +146,7 @@ After saving, take note of the "Client ID" and "Secret" under the "Application D
 ```
 
 * Recreate the services composition
+
 ```
 ./sphere-stack.sh recreate services
 ```
