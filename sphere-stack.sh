@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=1.2
+VERSION=1.3
 
 die() {
     echo "$*" 1>&2
@@ -13,10 +13,10 @@ version() {
 
 ip() {
     if test -n "$DOCKER_HOST"; then
-	local ip=${DOCKER_HOST#tcp://};
-	echo ${ip%:*};
+		local ip=${DOCKER_HOST#tcp://};
+		echo ${ip%:*};
     else
-	echo "127.0.0.1"
+		echo "127.0.0.1"
     fi
 }
 
@@ -26,10 +26,10 @@ domain() {
 
 machine() {
     if test -n "$DOCKER_HOST"; then
-	docker-machine ls | cut -c1-20 | grep "\*\$" | cut -f1 -d' '
+		docker-machine ls | cut -c1-20 | grep "\*\$" | cut -f1 -d' '
     else
-	echo ""
-	return 1
+		echo ""
+		return 1
     fi
 }
 
@@ -186,8 +186,8 @@ NINJA_SIGNING_SECRET=$(pwgen);
 NINJA_SESSION_SECRET=$(pwgen);
 NINJA_RABBIT_SECRET=$(pwgen);
 NINJA_CLOUD_DOMAIN=example.com;
-NINJA_API_ENDPOINT=apiservice.\${NINJA_CLOUD_DOMAIN};
-NINJA_ID_ENDPOINT=douitsu.\${NINJA_CLOUD_DOMAIN};
+NINJA_API_ENDPOINT=api.\${NINJA_CLOUD_DOMAIN};
+NINJA_ID_ENDPOINT=id.\${NINJA_CLOUD_DOMAIN};
 NINJA_APP_TOKEN=app_XX;
 NINJA_APP_KEY=sk_XX;
 EOF

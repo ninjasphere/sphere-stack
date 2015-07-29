@@ -109,7 +109,7 @@ To learn the IP address of your docker-machine, run:
 Add an entry like the following to your local hosts /etc/hosts file:
 
 ```
-192.168.99.100 douitsu.example.com apiservice.example.com mqtt.example.com
+192.168.99.100 id.example.com api.example.com mqtt.example.com
 ```
 
 You can generate the correct entry with:
@@ -120,15 +120,15 @@ You can generate the correct entry with:
 
 ## douitsu
 
-* Register your first user in douitsu (https://douitsu.example.com), this will be used to setup the oauth2 applications.
+* Register your first user in douitsu (https://id.example.com), this will be used to setup the oauth2 applications.
 
 * You will probably find things easier if you choose trust to the self-signed certificate using the mechanisms provided by your browser &/or host operating systems.
 
 * Add an application for the sphere API service.
 
 	* "Something that users will trust" - "Private Ninja Cloud"
-	* "The full URL to your application homepage." - https://apiservice.example.com
-	* "Your application’s callback URL; Read our OAuth documentation for more info." - https://apiservice.example.com/auth/ninja/callback
+	* "The full URL to your application homepage." - https://api.example.com
+	* "Your application’s callback URL; Read our OAuth documentation for more info." - https://api.example.com/auth/ninja/callback
     * "This text is displayed to all potential users of your application." - "This is a private Ninja Cloud"
 
 After saving, take note of the "Client ID" and "Secret" under the "Application Details" title.
@@ -166,6 +166,9 @@ Then configure your browser as required to use this socks proxy using something 
 sphere-stack is licensed under the MIT License. See LICENSE for the full license text.
 
 # Revisions
+
+##1.3
+* changed default endpoint names from 'apiservice' to 'api' and from 'douitsu' to 'id'
 
 ##1.2
 * replace all configuration with environment files
