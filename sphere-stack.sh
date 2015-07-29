@@ -159,7 +159,7 @@ logs() {
 }
 
 pwgen() {
-    cat /dev/random | dd count=1 bs=256 2>/dev/null | openssl base64 | cut -c1-20 | head -1
+    cat /dev/urandom | dd count=1 bs=256 2>/dev/null | openssl base64 | cut -c1-20 | head -1
 }
 
 edit() {
