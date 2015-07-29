@@ -169,6 +169,11 @@ sphere-stack is licensed under the MIT License. See LICENSE for the full license
 
 # Revisions
 
+##1.2
+* replace all configuration with environment files
+* generate all environment files from master configuration using shell templates
+* add support for init and edit commands
+
 ##1.1
 * added 'sphere-stack.sh' to encapsulate scriplets used in instructions
 * ensured that resources used by resources-docker-compose.yml are located on persistent storage of the VM

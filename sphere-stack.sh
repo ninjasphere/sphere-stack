@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
+VERSION=1.2
+
 die() {
     echo "$*" 1>&2
     exit 1
 }
 
+version() {
+    echo "$VERSION"
+}
 
 ip() {
     if test -n "$DOCKER_HOST"; then
@@ -201,13 +206,14 @@ $0 start [resources|services]   - start the specified composition
 $0 stop [resources|services]    - stop the specified composition
 $0 logs [resources|services]    - logs from the specified composition
 $0 restart [resources|services] - restart the specified composition
+$0 version                      - report the script version
 EOF
 }
 
 cmd=$1
 shift 1
 case $cmd in
-    init)
+    init|version)
        $cmd "$@"
     ;;
     create|ip|domain|hosts-append|machine|start|stop|logs|recreate|init|edit)
