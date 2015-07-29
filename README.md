@@ -43,8 +43,11 @@ First CHANGE PASSWORDS as follows:
 1. Any variable containing `signing_secret`, at the moment for simplicity set them all to the same thing.
 2. RabbitMQ admin password, and all the associated connection strings beginning with `amqp://`.
 
+The following command will ensure that the /var/lib/sphere-stack on the docker host machine is pointing
+to a permanent location and then start the resources composition using docker-compose
+
 ```
-docker-compose -f resources-docker-compose.yml up -d
+./sphere.sh create resources
 ```
 
 ## databases
@@ -52,19 +55,19 @@ docker-compose -f resources-docker-compose.yml up -d
 Then if this is the first time you have run it you need to import the SQL database.
 
 ```
-./sphere-stack.sh create-mysql
+./sphere-stack.sh create mysql
 ```
 
 Then ensure the couchdb database is created and create the secondary index.
 
 ```
-./sphere-stack.sh create-couch
+./sphere-stack.sh create couch
 ```
 
 ## openssl
 
 ```
-./sphere-stack.sh create-keys
+./sphere-stack.sh create keys
 ```
 
 When you hit "ENTER", you will be asked a number of questions.
@@ -84,7 +87,7 @@ Email Address []:your_email@domain.com
 Then start the services.
 
 ```
-docker-compose -f services-docker-compose.yml up -d
+./sphere-stack.sh start services
 ```
 
 ## IP address
@@ -120,7 +123,7 @@ You can generate the correct entry with:
 	* "Something that users will trust" - "Private Ninja Cloud"
 	* "The full URL to your application homepage." - https://apiservice.example.com
 	* "Your application’s callback URL; Read our OAuth documentation for more info." - https://apiservice.example.com/auth/ninja/callback
-    * "This text is displayed to all potential users of your application." - This is a private Ninja Cloud"
+    * "This text is displayed to all potential users of your application." - "This is a private Ninja Cloud"
 
 After saving, take note of the "Client ID" and "Secret" under the "Application Details" title as you will need to
 edit services-docker-compose.yml to have these values.
@@ -139,11 +142,9 @@ update application set is_ninja_official=1 where appid = '<app id for this appli
     * usvc_oauth_clientID=app_XX
     * usvc_oauth_clientSecret=sk_XX
 
-* Restart the composition
+* Recreate the services composition
 ```
-docker-compose -f services-docker-compose.yml stop
-docker-compose -f services-docker-compose.yml rm
-docker-compose -f services-docker-compose.yml up
+./sphere-stack.sh recreate services
 ```
 
 ## security
@@ -163,7 +164,7 @@ sphere-stack is licensed under the MIT License. See LICENSE for the full license
 # Revisions
 
 ##1.1
-* added 'sphere-stack.sh' command with create-mysql, create-couch, create-keys steps`
+* added 'sphere-stack.sh' to encapsulate scriplets used in instructions
 * ensured that resources used by resources-docker-compose.yml are located on persistent storage of the VM
 
 ##1.0
