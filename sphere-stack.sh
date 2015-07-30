@@ -46,7 +46,7 @@ create() {
     }
 
     services() {
-        docker-compose -f services-docker-compose.yml up -d
+        docker-compose -p spherestack -f services-docker-compose.yml up -d
     }
 
     resources() {
@@ -58,7 +58,7 @@ sudo mkdir -p /mnt/sda1/var/lib/sphere-stack &&
 sudo ln -sf /mnt/sda1/var/lib/sphere-stack /var/lib/sphere-stack
 EOF
         fi
-        docker-compose -f resources-docker-compose.yml up -d
+        docker-compose -p spherestack -f resources-docker-compose.yml up -d
     }
 
     couch() {
@@ -90,10 +90,10 @@ start() {
     shift 1
     case "$resource" in
 	resources)
-	    docker-compose -f resources-docker-compose.yml up -d
+	    docker-compose -p spherestack -f resources-docker-compose.yml up -d
     ;;
     services)
-	    docker-compose -f services-docker-compose.yml up -d
+	    docker-compose -p spherestack -f services-docker-compose.yml up -d
     ;;
 	*)
 	    die "unknown resource: $resource"
@@ -106,14 +106,14 @@ recreate() {
     shift 1
     case "$resource" in
     resources)
-        docker-compose -f resources-docker-compose.yml stop
-        docker-compose -f resources-docker-compose.yml rm
-        docker-compose -f resources-docker-compose.yml up -d
+        docker-compose -p spherestack -f resources-docker-compose.yml stop
+        docker-compose -p spherestack -f resources-docker-compose.yml rm
+        docker-compose -p spherestack -f resources-docker-compose.yml up -d
     ;;
     services)
-        docker-compose -f services-docker-compose.yml stop
-        docker-compose -f services-docker-compose.yml rm -f
-        docker-compose -f services-docker-compose.yml up -d
+        docker-compose -p spherestack -f services-docker-compose.yml stop
+        docker-compose -p spherestack -f services-docker-compose.yml rm -f
+        docker-compose -p spherestack -f services-docker-compose.yml up -d
     ;;
     *)
     ;;
@@ -125,10 +125,10 @@ stop() {
     shift 1
     case "$resource" in
 	resources)
-	    docker-compose -f resources-docker-compose.yml stop
+	    docker-compose -p spherestack -f resources-docker-compose.yml stop
     ;;
     services)
-	    docker-compose -f services-docker-compose.yml stop
+	    docker-compose -p spherestack -f services-docker-compose.yml stop
     ;;
 	*)
 	    die "unknown resource: $resource"
@@ -148,10 +148,10 @@ logs() {
     shift 1
     case "$resource" in
 	resources)
-	    docker-compose -f resources-docker-compose.yml logs
+	    docker-compose -p spherestack -f resources-docker-compose.yml logs
     ;;
 	services)
-	    docker-compose -f services-docker-compose.yml logs
+	    docker-compose -p spherestack  -f services-docker-compose.yml logs
 	    ;;
 	*)
 	    die "unknown resource: $resource"
