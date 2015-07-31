@@ -181,11 +181,9 @@ EOF
 	"$@"
 }
 
-init() {
-    mkdir -p .sphere-stack
-    chmod 0700 .sphere-stack
-    if ! test -f .sphere-stack/master; then
-	cat > .sphere-stack/master <<EOF
+generate() {
+	master() {
+		cat <<EOF
 NINJA_SIGNING_SECRET=$(pwgen);
 NINJA_SESSION_SECRET=$(pwgen);
 NINJA_RABBIT_SECRET=$(pwgen);
@@ -195,10 +193,22 @@ NINJA_ID_ENDPOINT=id.\${NINJA_CLOUD_DOMAIN};
 NINJA_APP_TOKEN=app_XX;
 NINJA_APP_KEY=sk_XX;
 EOF
+	}
+
+	"$@"
+}
+
+init() {
+    mkdir -p .sphere-stack
+    chmod 0700 .sphere-stack
+	generate master > .sphere-stack/defaults
+    if ! test -f .sphere-stack/master; then
+		generate master > .sphere-stack/master
         echo "./sphere-stack/master has been initialized"
     else
         echo "skipping initialization of .sphere-stack/master - existing tokens will be used"
     fi
+    . .sphere-stack/defaults
     . .sphere-stack/master
     create config
 }
@@ -211,6 +221,7 @@ $0 create                       - create the couch database
 $0 ip                           - the ip of the docker machine
 $0 domain                       - the domain of the stack
 $0 machine                      - the machine
+$0 generate master              - generate the master
 $0 create resources             - create the resources composition
 $0 create services              - create the services composition
 $0 create couch                 - create the couch data store
@@ -232,11 +243,13 @@ case $cmd in
     ;;
     ip|domain|hosts-append|machine|init|edit|update)
        test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
+       . .sphere-stack/defaults
        . .sphere-stack/master
 	   $cmd "$@"
        ;;
     create|start|stop|logs|recreate)
        test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
+       . .sphere-stack/defaults
        . .sphere-stack/master
        if test "$1" == "all"; then
        		shift 1
