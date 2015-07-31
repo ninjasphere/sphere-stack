@@ -230,11 +230,30 @@ case $cmd in
     init|version)
        $cmd "$@"
     ;;
-    create|ip|domain|hosts-append|machine|start|stop|logs|recreate|init|edit|update)
+    ip|domain|hosts-append|machine|init|edit|update)
        test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
        . .sphere-stack/master
 	   $cmd "$@"
        ;;
+    create|start|stop|logs|recreate)
+       test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
+       . .sphere-stack/master
+       if test "$1" == "all"; then
+       		shift 1
+       		case "$cmd" in
+		       	stop)
+		       		$cmd services "$@"
+		       		$cmd resources "$@"
+		       	;;
+		       	*)
+		       		$cmd resources "$@"
+		       		$cmd services "$@"
+		       	;;
+       		esac
+	   else
+		    $cmd "$@"
+	   fi
+		;;
     *)
     	usage
 	;;
