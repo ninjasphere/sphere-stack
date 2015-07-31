@@ -243,13 +243,13 @@ case $cmd in
     ;;
     ip|domain|hosts-append|machine|init|edit|update)
        test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
-       . .sphere-stack/defaults
+       test -f .sphere-stack/defaults && . .sphere-stack/defaults
        . .sphere-stack/master
 	   $cmd "$@"
        ;;
     create|start|stop|logs|recreate)
        test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
-       . .sphere-stack/defaults
+       test -f .sphere-stack/defaults && . .sphere-stack/defaults
        . .sphere-stack/master
        if test "$1" == "all"; then
        		shift 1
