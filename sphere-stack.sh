@@ -26,7 +26,7 @@ domain() {
 
 machine() {
     if test -n "$DOCKER_HOST"; then
-		docker-machine ls | cut -c1-20 | grep "\*\$" | cut -f1 -d' '
+		docker-machine ls | cut -c1-20 | grep "\*" | cut -f1 -d' '
     else
 		echo ""
 		return 1
