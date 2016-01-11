@@ -169,6 +169,7 @@ pwgen() {
 
 edit() {
     ${EDITOR:-vi} .sphere-stack/master
+    initenv
     create config
 }
 
@@ -235,6 +236,12 @@ $0 version                      - report the script version
 EOF
 }
 
+initenv() {
+   test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
+   test -f .sphere-stack/defaults && . .sphere-stack/defaults
+   . .sphere-stack/master
+}
+
 cmd=$1
 shift 1
 case $cmd in
@@ -242,15 +249,11 @@ case $cmd in
        $cmd "$@"
     ;;
     ip|domain|hosts-append|machine|init|edit|update)
-       test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
-       test -f .sphere-stack/defaults && . .sphere-stack/defaults
-       . .sphere-stack/master
-	   $cmd "$@"
+		initenv
+	    $cmd "$@"
        ;;
     create|start|stop|logs|recreate)
-       test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
-       test -f .sphere-stack/defaults && . .sphere-stack/defaults
-       . .sphere-stack/master
+	   initenv
        if test "$1" == "all"; then
        		shift 1
        		case "$cmd" in
