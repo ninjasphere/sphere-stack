@@ -237,6 +237,15 @@ EOF
 }
 
 initenv() {
+	case "$(uname)" in
+		Linux)
+			test -z "$DOCKER_HOST" || die "sphere-stack.sh assumes docker is running locally on Linux and DOCKER_HOST is empty. See https://goo.gl/UiP5mN for more details."
+		;;
+		*)
+			:
+		;;
+	esac
+
    test -f .sphere-stack/master || die "run ./sphere-stack.sh init first!"
    test -f .sphere-stack/defaults && . .sphere-stack/defaults
    . .sphere-stack/master
