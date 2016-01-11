@@ -102,7 +102,7 @@ spherehaproxy:
   image: ninjablocks/haproxy:95d19f6
   env_file: config/spherehaproxy
   volumes:
-    - haproxy/:/haproxy-override
+    - ./haproxy:/haproxy-override
   links:
     - apiservice:apiservice
     - douitsu:douitsu
@@ -114,5 +114,5 @@ spherehaproxy:
   expose:
     - "80"
     - "443"
-    - "8883:8883"
+    - "8883"
 
