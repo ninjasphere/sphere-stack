@@ -1,3 +1,5 @@
+version: '3'
+
 # sphere-stack resources
 #
 # This is all the microservices which combine to make the sphere cloud resource services.
@@ -5,53 +7,49 @@
 # NOTE: You will want to reconfigure all the passwords in here and the test_sql.sql file.
 #
 
-# douitsu, activation databases
-spheremysql:
-  env_file: config/spheremysql
-  privileged: true
-  image: tutum/mysql
-  ports:
-    - "3306:3306"
-  volumes:
-    - /var/lib/sphere-stack/mysql:/var/lib/mysql
-  environment:
-    - MYSQL_USER="ninja"
-    - MYSQL_PASS="ninja"
-  expose:
-    - "3306"
+services:
+  spheremysql: # douitsu, activation databases
+    image: mariadb:10
+    env_file: config/spheremysql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD="true"
+      - MYSQL_USER="ninja"
+      - MYSQL_PASSWORD="ninja"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
 
-# document store
-spherecouch:
-  env_file: config/spherecouch
-  image: klaemo/couchdb
-  ports:
-    - "5984:5984"
-  volumes:
-    - /var/lib/sphere-stack/couchdb:/usr/local/var/lib/couchdb
-  expose:
-    - "5984"
+  spherecouch: # document store
+    env_file: config/spherecouch
+    image: couchdb:1
+    ports:
+      - "5984:5984"
+    expose:
+      - "5984"
+    volumes:
+      - ./data/couchdb:/usr/local/var/lib/couchdb
 
-# message broker
-sphererabbit:
-  hostname: sphererabbit
-  image: ninjablocks/rabbitmq
-  env_file: config/sphererabbit
-  volumes:
-    - /var/lib/sphere-stack/rabbitmq:/var/lib/rabbitmq
-  ports:
-    - "1883:1883"
-    - "5672:5672"
-    - "15672:15672"
-  expose:
-    - "1883"
-    - "5672"
-    - "15672"
+  sphererabbit: # message broker
+    image: ninjablocks/rabbitmq
+    env_file: config/sphererabbit
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "1883:1883"
+      - "5672:5672"
+      - "15672:15672"
+    expose:
+      - "1883"
+      - "5672"
+      - "15672"
 
-# cache
-sphereredis:
-  env_file: config/sphereredis
-  image: redis
-  ports:
-    - "6379:6379"
-  expose:
-    - "6379"
+  sphereredis: # cache
+    env_file: config/sphereredis
+    image: redis:3
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"

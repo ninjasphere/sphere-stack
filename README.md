@@ -4,11 +4,10 @@ This setup is used to launch a standalone copy of the sphere platform either on 
 
 # prerequisites
 
-To start you need a host running ubuntu 14.04.02 with docker installed, this can be setup using docker-machine.
+To start you need a host running ubuntu 16.04 with docker installed
 
-* [docker](http://docker.io)
+* [docker](https://www.docker.com/)
 * [docker-compose](https://docs.docker.com/compose/)
-* [docker-machine](https://docs.docker.com/machine/) [optional]
 
 # overview
 
@@ -20,9 +19,9 @@ This are the resource services, consisting of mysql, rabbitmq, couchdb and redis
 
 These services keep their data in the following folders on the docker host:
 
-* /data/couchdb
-* /data/mysql
-* /data/rabbitmq
+* `./data/couchdb`
+* `./data/mysql`
+* `./data/rabbitmq`
 
 ## services
 
@@ -153,7 +152,7 @@ After saving, take note of the "Client ID" and "Secret" under the "Application D
 
 ## security
 
-On the VPS you only need to expose ports 80, 443 and 8883, the rest can be accessed using SSH port forwarding.
+On the VPS you only need to expose ports 80, 443 and 8883, the rest can be accessed using SSH port forwarding (See `HOST.md` for configuring the firewall).
 
 ```
 ssh -D 3000 USERNAME@HOST
@@ -167,17 +166,21 @@ sphere-stack is licensed under the MIT License. See LICENSE for the full license
 
 # Revisions
 
-##1.3
+## 1.4
+* breaking: path of persisted files changed from `/var/lib/sphere-stack` to `./data`
+* change docker-compose files to v3
+
+## 1.3
 * changed default endpoint names from 'apiservice' to 'api' and from 'douitsu' to 'id'
 
-##1.2
+## 1.2
 * replace all configuration with environment files
 * generate all environment files from master configuration using shell templates
 * add support for init and edit commands
 
-##1.1
+## 1.1
 * added 'sphere-stack.sh' to encapsulate scriplets used in instructions
 * ensured that resources used by resources-docker-compose.yml are located on persistent storage of the VM
 
-##1.0
+## 1.0
 * Initial release

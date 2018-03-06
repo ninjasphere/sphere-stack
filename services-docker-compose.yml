@@ -1,3 +1,5 @@
+version: '3'
+
 # sphere-stack services
 #
 # This is all the microservices which combine to make the sphere cloud.
@@ -5,114 +7,106 @@
 # NOTE: You will want to reconfigure all the passwords in here and the test_sql.sql file.
 #
 
-# identity provider
-douitsu:
-  image: ninjasphere/douitsu:6b1d73e
-  env_file: config/douitsu
-  external_links:
-    - spherestack_sphereredis_1:redis
-    - spherestack_spheremysql_1:mysql
-  ports:
-    - "3333:3333"
-  expose:
-    - "3333"
+services:
+  douitsu: # identity provider
+    image: ninjasphere/douitsu:6b1d73e
+    env_file: config/douitsu
+    external_links:
+      - spherestack_sphereredis_1:redis
+      - spherestack_spheremysql_1:mysql
+    ports:
+      - "3333:3333"
+    expose:
+      - "3333"
 
-# sphere activation service
-activation:
-  image: ninjasphere/sphere-activation-service:90c74a0
-  env_file: config/activation
-  external_links:
-    - spherestack_sphereredis_1:redis
-    - spherestack_spheremysql_1:mysql
-    - spherestack_sphererabbit_1:rabbit
-  ports:
-    - "5100:5100"
-  expose:
-    - "5100"
+  activation: # sphere activation service
+    image: ninjasphere/sphere-activation-service:90c74a0
+    env_file: config/activation
+    external_links:
+      - spherestack_sphereredis_1:redis
+      - spherestack_spheremysql_1:mysql
+      - spherestack_sphererabbit_1:rabbit
+    ports:
+      - "5100:5100"
+    expose:
+      - "5100"
 
-# sphere rest api service
-apiservice:
-  env_file: config/apiservice
-  image: ninjasphere/sphere-api-service:a13fb9f
-  links:
-    - activation:activation
-    - douitsu:douitsu
-    - modelservice:modelservice
-  external_links:
-    - spherestack_sphereredis_1:redis
-    - spherestack_spheremysql_1:mysql
-    - spherestack_sphererabbit_1:rabbit
-  ports:
-    - "5200:5200"
-  expose:
-    - "5200"
+  apiservice: # sphere rest api service
+    image: ninjasphere/sphere-api-service:a13fb9f
+    env_file: config/apiservice
+    links:
+      - activation:activation
+      - douitsu:douitsu
+      - modelservice:modelservice
+    external_links:
+      - spherestack_sphereredis_1:redis
+      - spherestack_spheremysql_1:mysql
+      - spherestack_sphererabbit_1:rabbit
+    ports:
+      - "5200:5200"
+    expose:
+      - "5200"
 
-# sphere rpc service
-rpcservice:
-  image: ninjasphere/sphere-rpc-service:e4de51c
-  links:
-    - modelservice:modelservice
-  env_file: config/rpcservice
-  external_links:
-    - spherestack_sphereredis_1:redis
-    - spherestack_spheremysql_1:mysql
-    - spherestack_sphererabbit_1:rabbit
-  ports:
-    - "5900:5900"
-  expose:
-    - "5900"
+  rpcservice: # sphere rpc service
+    image: ninjasphere/sphere-rpc-service:e4de51c
+    env_file: config/rpcservice
+    links:
+      - modelservice:modelservice
+    external_links:
+      - spherestack_sphereredis_1:redis
+      - spherestack_spheremysql_1:mysql
+      - spherestack_sphererabbit_1:rabbit
+    ports:
+      - "5900:5900"
+    expose:
+      - "5900"
 
-# sphere model store service
-modelservice:
-  image: ninjasphere/sphere-modelstore-service:2463a5e
-  env_file: config/modelservice
-  external_links:
-    - spherestack_spherecouch_1:couchdb
-  ports:
-    - "5600:5600"
-  expose:
-    - "5600"
+  modelservice: # sphere model store service
+    image: ninjasphere/sphere-modelstore-service:2463a5e
+    env_file: config/modelservice
+    external_links:
+      - spherestack_spherecouch_1:couchdb
+    ports:
+      - "5600:5600"
+    expose:
+      - "5600"
 
-# sphere state service
-stateservice:
-  image: ninjasphere/sphere-state-service:2a2b68c
-  env_file: config/stateservice
-  external_links:
-    - spherestack_sphereredis_1:redis
-    - spherestack_sphererabbit_1:rabbit
-  ports:
-    - "6100:6100"
-  expose:
-    - "6100"
+  stateservice: # sphere state service
+    image: ninjasphere/sphere-state-service:2a2b68c
+    env_file: config/stateservice
+    external_links:
+      - spherestack_sphereredis_1:redis
+      - spherestack_sphererabbit_1:rabbit
+    ports:
+      - "6100:6100"
+    expose:
+      - "6100"
 
-# sphere mqtt proxy
-mqttproxy:
-  image: ninjablocks/mqtt-proxy:e272ac0
-  env_file: config/mqttproxy
-  external_links:
-    - spherestack_spheremysql_1:mysql
-    - spherestack_sphererabbit_1:rabbit
-  ports:
-    - "6300:6300"
-  expose:
-    - "6300"
+  mqttproxy: # sphere mqtt proxy
+    image: ninjablocks/mqtt-proxy:e272ac0
+    env_file: config/mqttproxy
+    external_links:
+      - spherestack_spheremysql_1:mysql
+      - spherestack_sphererabbit_1:rabbit
+    ports:
+      - "6300:6300"
+    expose:
+      - "6300"
 
-# cache
-spherehaproxy:
-  image: ninjablocks/haproxy:95d19f6
-  env_file: config/spherehaproxy
-  volumes:
-    - ./haproxy:/haproxy-override
-  links:
-    - apiservice:apiservice
-    - douitsu:douitsu
-    - mqttproxy:mqttproxy
-  ports:
-    - "80:80"
-    - "443:443"
-    - "8883:8883"
-  expose:
-    - "80"
-    - "443"
-    - "8883"
-
+  spherehaproxy: # cache
+    image: ninjablocks/haproxy:95d19f6
+    env_file: config/spherehaproxy
+    links:
+      - apiservice:apiservice
+      - douitsu:douitsu
+      - mqttproxy:mqttproxy
+    volumes:
+      - ./haproxy:/haproxy-override
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8883:8883"
+    expose:
+      - "80"
+      - "443"
+      - "8883"

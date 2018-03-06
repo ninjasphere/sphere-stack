@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=1.3
+VERSION=1.4
 
 die() {
     echo "$*" 1>&2
@@ -50,14 +50,7 @@ create() {
     }
 
     resources() {
-        if test -z "$DOCKER_HOST"; then
-           sudo mkdir -p /var/lib/sphere-stack || die "failed to create sphere-stack"
-        else
-           ssh -i ~/.docker/machine/machines/$(machine)/id_rsa docker@$(ip) <<EOF
-sudo mkdir -p /mnt/sda1/var/lib/sphere-stack &&
-sudo ln -sf /mnt/sda1/var/lib/sphere-stack /var/lib/sphere-stack
-EOF
-        fi
+        mkdir -p ./data || die "failed to create sphere-stack"
         docker-compose -p spherestack -f resources-docker-compose.yml up -d
     }
 
@@ -155,7 +148,7 @@ logs() {
 	    docker-compose -p spherestack -f resources-docker-compose.yml logs
     ;;
 	services)
-	    docker-compose -p spherestack  -f services-docker-compose.yml logs
+	    docker-compose -p spherestack -f services-docker-compose.yml logs
 	    ;;
 	*)
 	    die "unknown resource: $resource"
